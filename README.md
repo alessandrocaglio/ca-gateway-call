@@ -151,6 +151,27 @@ oc rsh $POD_NAME curl http://hello.ossm-demo-hello-2.svc.cluster.local:8080/hell
 ```
 
 ## Clean up
+Delete hello namespaces
+```
+oc delete ns ossm-demo-hello-3
+oc delete ns ossm-demo-hello-2
+oc delete ns ossm-demo-hello-1
+```
+
+Delete MemberRoll and ControlPlane
+```
+oc delete -n ossm-demo ServiceMeshMemberRoll default
+oc delete -n ossm-demo ServiceMeshControlPlane ossm-demo-sm
+```
+
+Delete ControlPlane Namespace
+```
+oc delete ns ossm-demo
+```
+
+
+
+
 
 
 ## Appendix
