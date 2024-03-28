@@ -1,0 +1,10 @@
+---
+kind: ServiceMeshMemberRoll
+apiVersion: maistra.io/v1
+metadata:
+  name: default
+  namespace: ossm-demo
+spec:
+  memberSelectors:
+    - matchLabels:
+        servicemesh: ossm-demo

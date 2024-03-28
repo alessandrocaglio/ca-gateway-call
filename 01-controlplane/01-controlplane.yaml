@@ -1,0 +1,38 @@
+apiVersion: maistra.io/v2
+kind: ServiceMeshControlPlane
+metadata:
+  name: ossm-demo-sm
+  namespace: ossm-demo
+spec:
+  version: v2.4
+  mode: MultiTenant
+  tracing:
+    type: Jaeger
+    sampling: 10000
+  addons:
+    jaeger:
+      name: jaeger
+      install:
+        storage:
+          type: Memory
+    kiali:
+      enabled: true
+      name: kiali
+    grafana:
+      enabled: true
+    prometheus:
+      enabled: true
+  telemetry:
+    type: Istiod
+  proxy:
+    injection:
+      autoInject: true
+    accessLogging:
+      file: 
+        name: /dev/stdout
+  gateways:
+    openshiftRoute:
+      enabled: false
+
+   
+

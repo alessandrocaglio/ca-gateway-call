@@ -1,0 +1,21 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: hello-virtualservice
+spec:
+  hosts:
+  - "$APP_NAME.$DOMAIN_NAME"
+  gateways:
+  - hello-gateway
+  http:
+  - match:
+    - uri:
+        prefix: /hello-$APP_INSTANCE
+    rewrite:
+      uri: /
+    route:
+    - destination:
+        host: hello
+        port:
+          number: 8080
+---

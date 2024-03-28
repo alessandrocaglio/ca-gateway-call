@@ -1,0 +1,34 @@
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: hello-gateway
+  namespace: ossm-demo
+spec:
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: $APP_NAME-certs
+    hosts:
+    - "$APP_NAME.$DOMAIN_NAME"
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: hello-route
+  namespace: ossm-demo
+spec:
+  host: $APP_NAME.$DOMAIN_NAME
+  to:
+    kind: Service
+    name: istio-ingressgateway
+    weight: 100
+  tls:
+    termination: passthrough
+  wildcardPolicy: None

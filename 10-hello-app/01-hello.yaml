@@ -1,0 +1,53 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello
+  labels:
+    app: hello
+    service: hello
+spec:
+  ports:
+  - port: 8080
+    name: http
+  selector:
+    app: hello
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: hello-sa
+  labels:
+    account: hello
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-v1
+  labels:
+    app: hello
+    version: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hello
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: hello
+        version: v1
+    spec:
+      serviceAccountName: hello-sa
+      containers:
+      - name: hello
+        image: quay.io/acaglio/hello:v1
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+        env:
+          - name: NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+---
