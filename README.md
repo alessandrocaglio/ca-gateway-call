@@ -116,5 +116,42 @@ curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-2/hello
 curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
 ```
 
+### Extra - Istio Policy
+Example policy to deny all and open only to the gateway
+
+Apply deny all policy
+```
+export APP_INSTANCE=3
+oc apply -n ossm-demo-hello-$APP_INSTANCE -f 50-istio-policy/01-deny-all.yaml 
+```
+
+Test it
+```
+curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
+```
+
+Apply allow traffic from the gateway
+```
+export APP_INSTANCE=3
+oc apply -n ossm-demo-hello-$APP_INSTANCE -f 50-istio-policy/02-allow-from-gw.yaml 
+```
+
+Test it again (this time it should work) 
+```
+curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
+```
+
+Test it from inside another container in another namespace
+You shuold be allowed from hello-1 to call hello-2 but not hello-3
+```
+oc project ossm-demo-hello-1
+POD_NAME=$(oc get pod -l app=hello -o jsonpath="{.items[0].metadata.name}")
+oc rsh $POD_NAME curl http://hello.ossm-demo-hello-3.svc.cluster.local:8080/hello
+oc rsh $POD_NAME curl http://hello.ossm-demo-hello-2.svc.cluster.local:8080/hello
+```
+
+## Clean up
+
+
 ## Appendix
 To install the Service Mesh operators have a look at `00-subscriptions` directory
