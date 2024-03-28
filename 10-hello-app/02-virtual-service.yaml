@@ -6,7 +6,7 @@ spec:
   hosts:
   - "$APP_NAME.$DOMAIN_NAME"
   gateways:
-  - hello-gateway
+  - ossm-demo/hello-gateway
   http:
   - match:
     - uri:

@@ -1,1 +1,6 @@
 .env
+03-gateway-certs/*-certs.yaml
+03-gateway-certs/*.crt
+03-gateway-certs/*.key
+03-gateway-certs/*.csr
+
