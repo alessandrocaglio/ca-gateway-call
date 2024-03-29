@@ -8,12 +8,9 @@ spec:
   selector:
     istio: ingressgateway # use istio default controller
   servers:
-  - port:
-      number: 443
-      name: https
-      protocol: HTTPS
-    tls:
-      mode: SIMPLE
-      credentialName: $APP_NAME-certs
+  - port: 
+      number: 80
+      name: http
+      protocol: HTTP
     hosts:
     - "$APP_NAME.$DOMAIN_NAME"
