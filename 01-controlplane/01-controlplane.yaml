@@ -30,9 +30,9 @@ spec:
     accessLogging:
       file: 
         name: /dev/stdout
-  gateways:
-    openshiftRoute:
-      enabled: false
+  # gateways:
+  #   openshiftRoute:
+  #     enabled: false
 
    
 

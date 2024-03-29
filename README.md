@@ -34,33 +34,15 @@ Wait for all the pods to be up and running
 
 Kiali URL: https://kiali-ossm-demo.$DOMAIN_NAME/
 
-### Create custom TLS certs for the custom gateway
-Create a custom self-signed certificate for the ingress gateway. Cd into the `03-gateway-certs` directory (ensure you have set the correct env variables)
-```
-cd 03-gateway-certs
-./create-certs.sh
-```
-
-Create the TLS secret in the control plane namespace
-```
-oc apply -f ./$APP_NAME-certs.yaml -n ossm-demo
-```
-
-Go back to the repo root dir
-```
-cd ..
-```
-
 ### Create a custom gateway (and route) in the control plane
 Examine the files and ensure the variable substitution worked
+```
+cat 04-gateway/01-gateway.yaml | envsubst | less
+```
 
+Create the gateway
 ```
-cat 04-gateway/01-gateway-route.yaml | envsubst | less
-```
-
-Create the gateway and the route
-```
-cat 04-gateway/01-gateway-route.yaml | envsubst | oc apply -f-
+cat 04-gateway/01-gateway.yaml | envsubst | oc apply -f-
 ```
 
 ### Deploy 3 instances of an example application
@@ -70,13 +52,20 @@ oc create ns ossm-demo-hello-$APP_INSTANCE
 oc label ns ossm-demo-hello-$APP_INSTANCE servicemesh=ossm-demo
 oc project ossm-demo-hello-$APP_INSTANCE
 oc apply -n ossm-demo-hello-$APP_INSTANCE -f 10-hello-app/01-hello.yaml
+```
+Check the env (app and domain name substitution) for the Virtual Service creation
+```
 cat 10-hello-app/02-virtual-service.yaml | envsubst | less
+```
+
+Create the Virtual Service
+```
 cat 10-hello-app/02-virtual-service.yaml | envsubst | oc apply -n ossm-demo-hello-$APP_INSTANCE -f-
 ```
 
 Wait for the pod to start and test it and look at Kiali
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
 ```
 
 Deploy another instance on a separate namespace
@@ -91,7 +80,7 @@ cat 10-hello-app/02-virtual-service.yaml | envsubst | oc apply -n ossm-demo-hell
 
 Wait for the pod to start and test it and look at Kiali
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
 ```
 
 Deploy another instance on a separate namespace
@@ -106,14 +95,14 @@ cat 10-hello-app/02-virtual-service.yaml | envsubst | oc apply -n ossm-demo-hell
 
 Wait for the pod to start and test it and look at Kiali
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-$APP_INSTANCE/hello
 ```
 
 ### Test all
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-1/hello
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-2/hello
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-1/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-2/hello
+curl -s http://$APP_NAME.$DOMAIN_NAME/hello-3/hello
 ```
 
 ### Extra - Istio Policy
@@ -125,9 +114,9 @@ export APP_INSTANCE=3
 oc apply -n ossm-demo-hello-$APP_INSTANCE -f 50-istio-policy/01-deny-all.yaml 
 ```
 
-Test it
+Wait a couple of minutes and test it (you shuold get a 403 - RBAC: access denied)
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
+curl -is http://$APP_NAME.$DOMAIN_NAME/hello-3/hello
 ```
 
 Apply allow traffic from the gateway
@@ -138,7 +127,7 @@ oc apply -n ossm-demo-hello-$APP_INSTANCE -f 50-istio-policy/02-allow-from-gw.ya
 
 Test it again (this time it should work) 
 ```
-curl -iks https://$APP_NAME.$DOMAIN_NAME/hello-3/hello
+curl -is http://$APP_NAME.$DOMAIN_NAME/hello-3/hello
 ```
 
 Test it from inside another container in another namespace
