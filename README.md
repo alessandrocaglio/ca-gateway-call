@@ -52,15 +52,24 @@ cd ..
 ```
 
 ### Create a custom gateway (and route) in the control plane
-Examine the files and ensure the variable substitution worked
+Examine the files and ensure the variable substitution worked for the Gateway
+```
+cat 04-gateway/01-gateway.yaml | envsubst | less
+```
 
+Create the gateway
 ```
-cat 04-gateway/01-gateway-route.yaml | envsubst | less
+cat 04-gateway/01-gateway.yaml | envsubst | oc apply -f-
 ```
 
-Create the gateway and the route
+Examine the files and ensure the variable substitution worked for the Route
 ```
-cat 04-gateway/01-gateway-route.yaml | envsubst | oc apply -f-
+cat 04-gateway/02-route.yaml | envsubst | less
+```
+
+Create the Route
+```
+cat 04-gateway/02-route.yaml | envsubst | oc apply -f-
 ```
 
 ### Deploy 3 instances of an example application

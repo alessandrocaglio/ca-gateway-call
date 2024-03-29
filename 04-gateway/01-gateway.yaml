@@ -17,20 +17,3 @@ spec:
       credentialName: $APP_NAME-certs
     hosts:
     - "$APP_NAME.$DOMAIN_NAME"
----
-kind: Route
-apiVersion: route.openshift.io/v1
-metadata:
-  name: hello-route
-  namespace: ossm-demo
-spec:
-  host: $APP_NAME.$DOMAIN_NAME
-  to:
-    kind: Service
-    name: istio-ingressgateway
-    weight: 100
-  port:
-    targetPort: https
-  tls:
-    termination: passthrough
-  wildcardPolicy: None
