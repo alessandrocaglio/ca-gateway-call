@@ -2,7 +2,7 @@
 apiVersion: security.istio.io/v1beta1
 kind: AuthorizationPolicy
 metadata:
-  name: allow-from-fe
+  name: allow-from-be
   namespace: mgw
 spec:
   selector:
@@ -11,4 +11,4 @@ spec:
   rules:
   - from:
     - source:
-        namespaces: [ "be", "be-*" ] # Allow traffic from the same namespace
+        namespaces: [ "be" ] # Allow traffic from the same namespace

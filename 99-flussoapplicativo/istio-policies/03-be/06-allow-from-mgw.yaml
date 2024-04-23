@@ -11,4 +11,4 @@ spec:
   rules:
   - from:
     - source:
-        namespaces: [ "mgw" ] # Allow traffic from the same namespace
+        namespaces: [ "mgw", "mgw-*" ] # Allow traffic from the same namespace
