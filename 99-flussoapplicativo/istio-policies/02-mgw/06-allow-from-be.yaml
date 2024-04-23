@@ -1,0 +1,14 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-from-fe
+  namespace: mgw
+spec:
+  selector:
+    matchLabels: {} # You can specify labels here if you want to target specific services
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: [ "be", "be-*" ] # Allow traffic from the same namespace
