@@ -19,3 +19,10 @@ metadata:
     servicemesh: ossm-demo
   name: be
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    servicemesh: ossm-demo
+  name: mgw-1
+---
