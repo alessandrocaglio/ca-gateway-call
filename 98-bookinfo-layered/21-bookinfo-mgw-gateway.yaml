@@ -1,0 +1,37 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: bookinfo-gateway-mgw
+  namespace: ossm-bookinfo-middle
+spec:
+  # The selector matches the ingress gateway pod labels.
+  # If you installed Istio using Helm following the standard documentation, this would be "istio=ingress"
+  selector:
+    istio: ingressgateway # use istio default controller
+  servers:
+  - port:
+      number: 80
+      name: http
+      protocol: HTTP
+    hosts:
+    - "bookinfo-mgw.apps.cluster-qw7s2.dynamic.redhatworkshops.io"
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: bookinfo
+  namespace: ossm-bookinfo-middle
+spec:
+  hosts:
+  - "bookinfo-mgw.apps.cluster-qw7s2.dynamic.redhatworkshops.io"
+  gateways:
+  - bookinfo-gateway-mgw
+  http:
+  # - match:
+  #   - uri:
+  #       exact: /details
+  - route:
+    - destination:
+        host: details
+        port:
+          number: 9080

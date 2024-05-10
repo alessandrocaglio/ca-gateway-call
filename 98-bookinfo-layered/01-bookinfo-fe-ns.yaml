@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ossm-bookinfo-fe
+  labels:
+    servicemesh: ossm-demo
+    layer: frontend
+    app: bookinfo

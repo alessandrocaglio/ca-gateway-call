@@ -1,0 +1,36 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: authpolicy-istio-ingressgateway
+  namespace: ossm-bookinfo-fe
+spec:
+  selector:
+    matchLabels:
+      app: istio-ingressgateway
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            paths: ["*"]
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-gateway-sa
+  namespace: ossm-bookinfo-fe
+spec:
+  action: ALLOW
+  rules:
+    - from:
+        - source:
+            principals: ["cluster.local/ns/ossm-demo/sa/istio-ingressgateway-service-account"]
+      to:
+        - operation:
+            methods: ["GET"]
+            paths: ["/productpage", "/static/*"]
+        - operation:
+            methods: ["POST"]
+            paths: ["/login", "/logout"]
+        - operation:
+            methods: ["*"]
+            paths: ["/api/v1/products"]

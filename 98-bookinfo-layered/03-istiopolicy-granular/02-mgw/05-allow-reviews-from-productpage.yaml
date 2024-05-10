@@ -1,0 +1,15 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-reviews-from-productpage
+  namespace: ossm-bookinfo-middle
+spec:
+  selector:
+    matchLabels: 
+      app: reviews
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        principals: ["cluster.local/ns/ossm-bookinfo-fe/sa/bookinfo-productpage"]

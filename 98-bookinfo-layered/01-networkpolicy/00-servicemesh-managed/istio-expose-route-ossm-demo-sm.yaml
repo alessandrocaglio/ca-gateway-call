@@ -1,0 +1,28 @@
+---
+# Enable ingress traffic from the gateway
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  labels:
+    app: istio
+    app.kubernetes.io/component: mesh-config
+    app.kubernetes.io/instance: ossm-demo
+    app.kubernetes.io/managed-by: maistra-istio-operator
+    app.kubernetes.io/name: mesh-config
+    app.kubernetes.io/part-of: istio
+    maistra-version: 2.4.7
+    maistra.io/member-of: ossm-demo
+    release: istio
+  name: istio-expose-route-ossm-demo-sm
+  namespace: ossm-bookinfo-fe
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          network.openshift.io/policy-group: ingress
+  podSelector:
+    matchLabels:
+      maistra.io/expose-route: "true"
+  policyTypes:
+  - Ingress

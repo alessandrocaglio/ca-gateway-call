@@ -1,0 +1,14 @@
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-from-fe-be-inside
+  namespace: ossm-bookinfo-middle
+spec:
+  selector:
+    matchLabels: {} # You can specify labels here if you want to target specific services
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: [ "ossm-bookinfo-fe", "ossm-bookinfo-middle", "ossm-bookinfo-be" ] 

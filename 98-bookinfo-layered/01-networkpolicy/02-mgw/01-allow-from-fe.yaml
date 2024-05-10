@@ -1,0 +1,17 @@
+---          
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-from-fe
+  namespace: ossm-bookinfo-middle
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - namespaceSelector: 
+        matchLabels:
+          #kubernetes.io/metadata.name: ossm-bookinfo-middle
+          layer: frontend
+          app: bookinfo

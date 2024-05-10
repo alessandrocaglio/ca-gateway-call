@@ -1,0 +1,16 @@
+---
+# Enable all ingress trafic from the mesh
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: istio-mesh-ossm-demo-sm
+  namespace: ossm-bookinfo-fe
+spec:
+  ingress:
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          maistra.io/member-of: ossm-demo
+  podSelector: {}
+  policyTypes:
+  - Ingress
