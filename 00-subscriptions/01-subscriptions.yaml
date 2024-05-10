@@ -34,7 +34,7 @@ spec:
   name: kiali-ossm
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: kiali-operator.v1.73.4
+  startingCSV: kiali-operator.v1.73.7
 ---
 apiVersion: operators.coreos.com/v1alpha1
 kind: Subscription
@@ -47,7 +47,7 @@ spec:
   name: servicemeshoperator
   source: redhat-operators
   sourceNamespace: openshift-marketplace
-  startingCSV: servicemeshoperator.v2.5.0
+  startingCSV: servicemeshoperator.v2.5.1
   # Uncomment to run on infra nodes
   # config:
   #   nodeSelector: 
