@@ -1,0 +1,9 @@
+allow_from_gateway: 
+  enabled: false
+
+allow_from_namespaces:
+  enabled: true
+  namespaces:
+    - ossm-bookinfo-fe
+
+    

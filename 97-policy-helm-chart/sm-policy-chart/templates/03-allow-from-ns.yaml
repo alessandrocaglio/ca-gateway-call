@@ -1,0 +1,25 @@
+{{- if .Values.allow_from_namespaces.enabled }}
+---
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: allow-from-ns
+  namespace: {{ .Release.Namespace }}
+spec:
+  {{- if .Values.allow_from_namespaces.matchLabels }}
+  selector:
+    matchLabels: 
+      {{- .Values.allow_from_namespaces.matchLabels | toYaml | nindent 6 }}
+  {{- else }}
+  selector:
+    matchLabels: {} 
+  {{- end}}
+  action: ALLOW
+  rules:
+  - from:
+    - source:
+        namespaces: 
+        {{- range $ns := .Values.allow_from_namespaces.namespaces }}
+          - {{ $ns }}
+        {{- end}}
+{{- end }}

@@ -1,0 +1,12 @@
+allow_from_gateway: 
+  enabled: false
+  istio_system_namespace: istio-system
+  istio_gateway_service_account: istio-ingressgateway-service-account
+
+allow_from_namespaces:
+  enabled: false
+  # matchLabels:
+  #   app: test
+  namespaces: 
+    - samples
+    
