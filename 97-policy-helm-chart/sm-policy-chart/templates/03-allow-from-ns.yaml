@@ -20,6 +20,6 @@ spec:
     - source:
         namespaces: 
         {{- range $ns := .Values.allow_from_namespaces.namespaces }}
-          - {{ $ns }}
+          - "{{ $ns }}"
         {{- end}}
 {{- end }}
